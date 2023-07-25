@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+    <title>Customize Loading</title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    body{
+        background-color: #444444;
+    }
+    .row:nth-child(1){
+        background-color: black;
+        display: flex;
+        align-items: center;
+    }
+    .row label{
+        width: 200px;
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: bold;
+        margin: 20px auto;
+        display: inline-block;
+    }
+    .row input{
+        /* width: 300px; */
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+                <div id="cusLoading">
+                </div>
+            </div>
+        <div class="row">
+            <label for="letters">Text:</label>
+            <input type="text" placeholder="Loading" id="letters">
+            <br/>
+            <label for="timing">Speed:</label>
+            <input type="range" id="speed" min="1" max="10" value="5">
+            <br/>
+            <label for="bgColor">Background:</label>
+            <input type="color" id="bgColor">
+
+            <br/>
+            <label for="textColor">Text color:</label>
+            <input type="color" id="textColor">
+
+            <!-- <br/>
+            <label for="shadowColor">Shadow color:</label>
+            <input type="color" id="shadowColor">
+
+            <br/>
+            <label for="shadowXtrans">Shadow X:</label>
+            <input type="range" id="shadowXtrans" min="1" max="100" value="0">
+            
+            <br/>
+            <label for="shadowYtrans">Shadow Y:</label>
+            <input type="range" id="shadowYtrans" min="1" max="100" value="0">
+            
+            <br/>
+            <label for="shadowBlurRadius">Shadow blur-radius:</label>
+            <input type="range" id="shadowBlurRadius" min="1" max="100" value="5"> -->
+
+        </div>
+    </div>
+    <script src="js/loading.js"></script>
+    <script>
+        var loading = new Loading('cusLoading');
+        document.getElementById('letters').addEventListener('focus',function(e){
+            if(this.value !== ''){
+                this.setSelectionRange(0, this.value.length);
+            }
+        },false);
+        document.getElementById('letters').addEventListener('blur',function(e){
+            if(this.value !== ''){
+             loading.changeText(this.value); 
+            }
+        },false);
+
+        document.getElementById('speed').addEventListener('change',function(e){
+            if(this.value !== ''){
+                loading.changeSpeed(this.value/10);
+            }
+        },false);
+
+        // document.getElementById('shadowXtrans').addEventListener('change',function(e){
+        //     if(this.value !== ''){
+        //         loading.changeShowdowXTrans(this.value);
+        //     }
+        // },false);
+        // document.getElementById('shadowYtrans').addEventListener('change',function(e){
+        //     if(this.value !== ''){
+        //         loading.changeShowdowYTrans(this.value);
+        //     }
+        // },false);
+        // document.getElementById('shadowBlurRadius').addEventListener('change',function(e){
+        //     if(this.value !== ''){
+        //         loading.changeShowdowBlurRadius(this.value);
+        //     }
+        // },false);
+        // document.getElementById('shadowColor').addEventListener('change',function(e){
+        //     if(this.value !== ''){
+        //         loading.changeShadowColor(this.value);
+        //     }
+        // },false);
+
+        document.getElementById('textColor').addEventListener('change',function(e){
+            if(this.value !== ''){
+                loading.changeFontColor(this.value);
+            }
+        },false);
+
+        document.getElementById('bgColor').addEventListener('change',function(e){
+            if(this.value !== ''){
+                loading.changeBGColor(this.value);
+            }
+        },false);
+
+    </script>
+
+</body>
+</html>

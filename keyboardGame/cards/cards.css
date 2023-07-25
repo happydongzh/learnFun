@@ -1,0 +1,143 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    overflow: auto;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background-color: black;
+}
+
+.cards {
+    --length: 60vh;
+    width: calc(var(--length) * 0.718);
+    height: var(--length);
+    perspective: 500px;
+    transform-style: preserve-3d;
+}
+
+.cards .card {
+    position: absolute;
+    box-shadow: 0px 0px 10px 2px rgb(58, 58, 58);
+    /* background-color:rgba(158, 158, 158, 1); */
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s;
+}
+.cards .card > div{
+    font-size: 12em;
+}
+
+.cards .card:first-child {
+    background-color:rgba(158, 158, 158, 1);
+}
+
+.cards .card:nth-child(1) {}
+
+.cards .card:nth-child(2) {
+    transform: translate3d(0px, -40px, -40px);
+}
+
+.cards .card:nth-child(3) {
+    transform: translate3d(0px, -80px, -80px);
+}
+
+.cards .card:nth-child(4) {
+    transform: translate3d(0px, -120px, -120px);
+}
+
+.cards .card:nth-child(5) {
+    transform: translate3d(0px, -160px, -160px);
+}
+.cards .card:nth-child(6) {
+    transform: translate3d(0px, -200px, -200px);
+}
+
+.cards .card:nth-child(7) {
+    transform: translate3d(0px, -240px, -240px);
+}
+
+.cards:hover {
+    /* animation: aa .3s ease-out 1 forwards; */
+}
+
+.fadeOut {
+    animation: fadeOutAnim 0.5s ease-out 1 forwards;
+}
+
+@keyframes fadeOutAnim {
+    from {
+        transform: scale3d(1, 1, 1);
+        opacity: 1;
+    }
+    to {
+        transform: scale3d(1.1, 1.1,1);
+        opacity: 0;
+    }
+}
+
+
+.turnRight{
+    animation: turnRightAnim 0.5s ease-out 1 forwards;
+}
+
+@keyframes turnRightAnim{
+    from{
+        transform: rotateZ(0) translateX(0) scale(1);
+        opacity: 1;
+    }
+    to{
+        transform: rotateZ(5deg) translateX(100%) scale(1);
+        opacity: 0;
+    }
+
+}
+
+.turnLeft{
+    animation: turnLeftAnim 0.5s ease-out 1 forwards;
+}
+
+@keyframes turnLeftAnim{
+    from{
+        transform: rotateZ(0) translateX(0) scale(1);
+        opacity: 1;
+    }
+    to{
+        transform: rotateZ(-5deg) translateX(-100%) scale(1);
+        opacity: 0;
+    }
+
+}
+
+
+.right{
+    animation: yesAnim 0.2s ease-in-out 1 backwards;
+}
+
+.wrong{
+    animation: noAnim 0.2s ease-in-out 1 backwards;
+}
+@keyframes yesAnim{
+    from{
+        box-shadow: none;
+    }
+    to{
+        box-shadow: inset 0px 0px 30px 34px green;
+    }
+}
+
+@keyframes noAnim{
+    from{
+        box-shadow: none;
+    }
+    to{
+        box-shadow: inset 0px 0px 30px 34px red
+    }
+}

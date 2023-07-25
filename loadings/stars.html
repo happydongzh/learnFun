@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+        }
+
+        body {
+            background-color: #222222;
+        }
+
+        .container {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sky {
+            background-color: #000;
+            height: 80vh;
+            width: 100vw;
+            perspective: 300px;
+            transform-style: preserve-3d;
+            /* perspective-origin: top right; */
+            transition: linear 1s all;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .star {
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 1);
+            box-sizing: border-box;
+            border-radius: 50%;
+            box-shadow: 0px 0px 3px 1px #FFF;
+            opacity: 0.1;
+            /* animation: fall linear infinite; */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateZ(300px);
+                box-shadow: 0 0 0 0 #FFF;
+                opacity: 1;
+            }
+        }
+
+        .directions {
+            width: 5vw;
+            height: 5vw;
+            position: fixed;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-gap: 1px;
+            top: 0;
+            left: calc((100%-5vw)/2);
+            transition: linear 200ms all;
+        }
+
+        .directions>div {
+            background-color: black;
+            transition: linear 200ms all;
+        }
+
+
+        .directions>div:hover {
+            background-color: whitesmoke;
+        }
+
+        .top-left {}
+
+        .top-center {}
+
+        .top-right {}
+
+        .center-left {}
+
+        .center-right {}
+
+        .bottom-left {
+            top: 0;
+            left: 0;
+        }
+
+        .bottom-center {
+            top: 0;
+            left: 0;
+        }
+
+        .bottom-right {}
+
+        .center {}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sky">
+        </div>
+    </div>
+
+    <div class="directions">
+        <div class="top-left"></div>
+        <div class="top-center"></div>
+        <div class="top-right"></div>
+        <div class="center-left"></div>
+        <div class="center"></div>
+        <div class="center-right"></div>
+        <div class="bottom-left"></div>
+        <div class="bottom-center"></div>
+        <div class="bottom-right"></div>
+    </div>
+</body>
+
+<script>
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+    }
+    document.addEventListener('DOMContentLoaded', function (e) {
+        let drops = [],
+            sky = document.querySelector('div.sky'),
+            directions = document.querySelector('div.directions'),
+            wh = {
+                w: sky.offsetWidth,
+                h: sky.offsetHeight,
+                t: sky.offsetTop,
+                l: sky.offsetLeft
+            }
+        for (let i = 0; i < 350; i++) {
+            let drop = document.createElement('div');
+            drop.style.animationDelay = getRandomIntInclusive(0, 1000) + 'ms';
+            drop.style.animationName = 'fall';
+            drop.style.animationTimingFunction = 'linear';
+            drop.style.animationDuration = getRandomIntInclusive(1000, 4000) + 'ms';
+            drop.style.animationIterationCount = '2';
+            drop.style.transform = 'translateZ(-' + getRandomIntInclusive(0, 150) + 'px)';
+            drop.style.left = getRandomIntInclusive(0, wh.w) + 'px';
+            drop.style.top = getRandomIntInclusive(0, wh.h) + 'px';
+            drop.addEventListener('animationiteration', function (e) {
+                this.style.left = getRandomIntInclusive(0, wh.w) + 'px';
+                this.style.top = getRandomIntInclusive(0, wh.h) + 'px';
+                if (this.style.animationIterationCount !== 'infinite') {
+                    this.style.animationIterationCount = 'infinite'
+                }
+            });
+            drop.classList.add('star');
+            sky.append(drop);
+        }
+
+        directions.addEventListener('click', function (e) {
+            sky.style.perspectiveOrigin = e.target.classList[0].replace(/-/ig, ' ');
+        }, false);
+
+    });
+</script>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋转星空</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            /* border: 1px solid red; */
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas">
+    </canvas>
+
+    <script>
+        //画一个椭圆，让球体在椭圆轨迹上运动
+
+
+        /**
+        * 星星
+        */
+        class Star {
+            constructor(canvas, options) {
+                this.ctx = canvas.getContext('2d');
+                this.radius = options.radius; //球体半径
+                this.color = options.color; //颜色
+                this.freeq = options.freeq; //运行速率
+                this.xLength = options.xLength; //椭圆横轴长度
+                this.yLength = options.yLength; //椭圆纵轴长度
+                this.centerPos = options.centerPos; //椭圆中心点
+                this.dig = Math.PI / this.freeq; //运动步长
+                this.x = this.y = 0; //球体坐标
+
+                //随机基数用来计算球体初始x,y坐标
+                this.counter = getRandomIntInclusive(1, this.freeq * 2 - 1);
+
+                //球体半径增大或减小的步长
+                //模拟球体旋转式由近及远 由大变小的3D视觉
+                this.rstep = this.radius / this.freeq;
+
+            }
+
+            draw() {
+                this.move();
+                //画椭圆轨迹
+                // this.ctx.beginPath();
+                // this.ctx.strokeStyle = this.color;
+                // this.ctx.ellipse(this.centerPos.x, this.centerPos.y, this.xLength, this.yLength, 0, 0, Math.PI * 2, true);
+                // this.ctx.stroke();
+                // this.ctx.closePath();
+
+                //画球体
+                this.ctx.beginPath();
+                this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+                this.ctx.fillStyle = this.color;
+                this.ctx.fill();
+                this.ctx.closePath();
+            }
+
+            move() {
+                //球体x坐标 
+                this.x = this.xLength * Math.sin(this.counter * this.dig) + this.centerPos.x;
+                //球体x坐标 
+                this.y = this.yLength * Math.cos(this.counter * this.dig) + this.centerPos.y;
+
+                this.counter++;
+                this.radius += this.rstep;
+                if (this.counter >= this.freeq * 2) {
+                    this.counter = 0;
+                }
+
+                //如果球体运动x坐标超过中间点 则意味着向远处运动 则步长置为负值 来减小球体大小 否则 正直 增大球体
+                if (this.x > this.centerPos.x) {
+                    this.rstep = -Math.abs(this.rstep);
+                } else {
+                    this.rstep = Math.abs(this.rstep);
+                }
+            }
+        }
+
+        function getRandomIntInclusive(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let canvas = document.getElementById('canvas'),
+                ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let stars = [];
+            for (let i = 1; i < 500; i++) {
+                let xlen = getRandomIntInclusive(50, window.innerWidth / 2 - 100);
+                let s = new Star(canvas, {
+                    radius: getRandomIntInclusive(3, 10),
+                    freeq: getRandomIntInclusive(200, 500),
+                    xLength: xlen,
+                    yLength: getRandomIntInclusive(xlen * 0.45, xlen * 0.5),
+                    color: 'rgb(' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')',
+                    centerPos: {
+                        x: window.innerWidth / 2,
+                        y: window.innerHeight * .5,
+                    }
+                });
+                stars.push(s);
+            }
+            function draw() {
+                //setInterval(start, 100);
+                ctx.globalCompositeOperation = 'lighter';
+                start();
+            }
+
+            function start() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(e => e.draw());
+                //star.draw();
+                requestAnimationFrame(start);
+            }
+
+            draw();
+        });
+    </script>
+</body>
+
+</html>

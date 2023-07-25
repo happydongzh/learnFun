@@ -1,0 +1,309 @@
+
+/**
+* LoadingCircle start
+**/
+.loadingCircle {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loadingCircle .cir {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    border-right: 1px solid transparent !important;
+    border-left: 1px solid transparent !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: turn 1.5s ease-in-out infinite;
+}
+
+.loadingCircle .c1 {
+    width: 10px;
+    height: 10px;
+    border-color: cornflowerblue;
+}
+
+.loadingCircle .c2 {
+    width: 20px;
+    height: 20px;
+    border-color: crimson;
+    animation-delay: .2s;
+}
+
+.loadingCircle .c3 {
+    width: 30px;
+    height: 30px;
+    border-color: gold;
+    animation-delay: .4s;
+}
+
+.loadingCircle .c4 {
+    width: 40px;
+    height: 40px;
+    border-color: greenyellow;
+    animation-delay: .6s;
+}
+
+@keyframes turn {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(360deg) scale(1.5);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+}
+/**
+* LoadingCircle end
+**/
+
+
+
+/**
+*LoadingPie start
+**/
+
+.loadingPie{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.loadingPie .pie{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    animation: pie 4s ease-in-out infinite;
+    background-color:#FF9800;
+}
+
+.loadingPie .p1{
+    animation-delay: 3s;
+}
+.loadingPie  .p2{
+    animation-delay: 2s;
+}
+.loadingPie .p3{
+    animation-delay: 1s;
+}
+.loadingPie .p4{
+    animation-delay: 0s;
+}
+
+@keyframes pie {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+    }
+    /* 80% {
+        transform: translate(-50%, -50%) scale(3);
+        background-color:transparent;
+    } */
+    100% {
+        transform: translate(-50%, -50%) scale(3);
+        background: transparent;
+    }
+}
+
+/**
+*LoadingPie end
+**/
+
+
+/**
+* LoadingSquare start
+**/
+
+.loadingSquare{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    perspective-origin: center;
+    perspective: 200px;
+}
+
+.loadingSquare .square{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color:rgba(100, 149, 237,1)
+}
+
+.loadingSquare .square:nth-child(1){
+    animation: squareVertical 1.5s ease-in-out infinite;
+}
+@keyframes squareVertical{
+    0% {
+        transform: translate(-50%,-50%) rotateY(0deg) rotateX(0);
+        background-color:rgba(100, 149, 237,1);
+	}
+	50% {
+        transform: translate(-50%,-50%) rotateY(180deg) rotateX(0);
+        background-color:rgba(100, 149, 237,1);
+	}
+	100% {
+        transform: translate(-50%,-50%) rotateY(180deg) rotateX(180deg);
+        background-color:rgba(100, 149, 237,1);
+    }
+}
+/**
+* LoadingSquare end
+**/
+
+
+
+/**
+* Jumpball start
+**/
+
+.jumpBall{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    perspective-origin: center;
+    perspective: 200px;
+}
+
+.jumpBall .ball{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color:rgba(110, 159, 247,1);
+    border-radius: 50%;
+    animation: jumpBall 1.5s ease-in-out infinite;
+}
+
+.jumpBall::before{
+    content: '';
+    width: 5%;
+    height: 0%;
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    background-color: rgba(63, 81, 181,0.6);
+    box-shadow: 0px 0px 8px 3px black;
+    transform: translate(-50%, 0px);
+    border-radius: 10%;
+    animation: jumpBallShadow 1.5s ease-in-out infinite;
+}
+
+@keyframes jumpBallShadow{
+    0%{
+        box-shadow: 0px 0px 8px 3px black;
+    }
+    50%{
+        box-shadow: 0px 0px 3px 1px black;
+    }
+    100%{
+        box-shadow: 0px 0px 8px 3px black;
+    }
+}
+
+@keyframes jumpBall{
+    0% {
+        top: 50%
+    }
+    50% { 
+        top: 15%;
+    }
+    100% {
+        top: 50%;
+    }
+}
+
+/**
+* Jumpball end
+**/
+
+.character {
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.character .char{
+    display: inline-block;
+    line-height: 100px;
+    font-size: 2em;
+    color: rgb(63, 81, 181);
+    filter: brightness(0.2);
+    text-shadow: 0px 10px 0px rgb(63, 81, 181);
+    opacity: 0;
+    animation: character 2.1s linear infinite;
+}
+
+.character .char:nth-child(1){
+    animation-delay: 0s;
+}
+.character .char:nth-child(2){
+    animation-delay: 0.3s;
+}
+.character .char:nth-child(3){
+    animation-delay: 0.6s;
+}
+.character .char:nth-child(4){
+    animation-delay: 0.9s;
+}
+.character .char:nth-child(5){
+    animation-delay: 0.12s;
+}
+.character .char:nth-child(6){
+    animation-delay: 1.5s;
+}
+.character .char:nth-child(7){
+    animation-delay: 1.8s;
+}
+
+@keyframes character{
+    0% {
+        filter: brightness(0.2);
+        text-shadow: 0px 0px 0px rgb(63, 81, 181);
+    }
+    50% {
+        filter: brightness(1.2);
+        text-shadow: 0px -70px 10px rgb(63, 81, 181);
+        opacity: 1;
+    }
+    100% {
+        filter: brightness(0.2);
+        text-shadow: 0px 0px 0px rgb(63, 81, 181);
+    }
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Parallex Blocks</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .main {
+            background-color: #444444;
+            height: 100vh;
+            width: 100vw;
+            perspective: 5px;
+            transform-style: preserve-3d;
+            overflow: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .main .layer {
+            width: 100%;
+            height: 100%;
+            perspective: 1px;
+            transform-style: preserve-3d;
+        }
+
+        .main .layer>div {
+            position: absolute;
+            transition: ease-out 200ms all;
+            width: 200px;
+            height: 200px;
+        }
+
+        nav {
+            position: fixed;
+            bottom: 30px;
+        }
+
+        nav ul {}
+
+        nav ul li {
+            font-size: 50px;
+            list-style: none;
+            float: left;
+            margin: 0px 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: whitesmoke;
+            cursor: pointer;
+            transition: ease-out 200ms all;
+        }
+
+        nav ul li a:hover {
+            color: darkorange;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                top: -100%;
+                opacity: 0;
+            }
+
+            to {
+                top: 0;
+                opacity: 1;
+
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div id="p1" class="layer"></div>
+        <div id="p2" class="layer"></div>
+        <div id="p3" class="layer"></div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#p1">1</a></li>
+            <li><a href="#p2">2</a></li>
+            <li><a href="#p3">3</a></li>
+        </ul>
+    </nav>
+</body>
+
+<script>
+    function vsize() {
+        return {
+            w: document.body.offsetWidth,
+            h: document.body.offsetHeight
+        };
+    }
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+    }
+    var colors = [
+        'rgba(255, 0, 0, 1)',
+        'rgba(255, 165, 0,1)',
+        'rgba(255, 255, 0, 1)',
+        'rgba(0, 255, 0, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(139, 0, 255, 1)'
+    ];
+    document.addEventListener('DOMContentLoaded', (e) => {
+        let size = {
+            w: document.querySelector('.main').clientWidth,
+            h: document.querySelector('.main').clientHeight
+
+        },
+            widthUnit = size.w / 5;
+        layers = document.querySelectorAll('div.main div.layer');
+        let scope = [
+            {
+                topFrom: 0,
+                topTo: size.h / 2,
+                leftFrom: 0,
+                leftTo: size.w / 2
+            }
+            ,
+            {
+                topFrom: 0,
+                topTo: size.h / 2,
+                leftFrom: size.w / 2,
+                leftTo: size.w - widthUnit
+            },
+            {
+                topFrom: size.h / 2,
+                topTo: size.h - Math.floor(widthUnit * 0.618),
+                leftFrom: 0,
+                leftTo: size.w / 2
+            },
+            {
+                topFrom: size.h / 2,
+                topTo: size.h - Math.floor(widthUnit * 0.618),
+                leftFrom: size.w / 2,
+                leftTo: size.w - widthUnit
+            }
+        ];
+        let j = 0;
+        layers.forEach(e => {
+            for (let i = 0; i < colors.length; i++) {
+                let div = document.createElement('DIV');
+                let t = Math.floor(getRandomIntInclusive(200, size.h - 200)),
+                    l = Math.floor(getRandomIntInclusive(200, size.w - 200));
+                div.style.top = t + 'px';
+                div.style.left = l + 'px';
+                div.style.transform = 'translateZ(-' + (t + l) % colors.length + 'px)';
+                div.style.backgroundColor = colors[i % 7];
+                e.append(div);
+            }
+            j++;
+        });
+        document.querySelector('UL').addEventListener('click', function (e) {
+            e.preventDefault();
+            let tid = e.target.href.replace(/.*#/ig, '');
+            document.getElementById(tid).scrollIntoView(true);
+
+            // document.getElementById(tid).querySelectorAll('div').forEach(e => {
+            //     //animation: name duration timing-function delay iteration-count direction fill-mode;
+            //     console.log(e.style.top);
+            //     e.style.animation = 'slideInFromTop 1s ease-out 100ms 1 forwards';
+
+            // });
+        }, false);
+
+    }, false);
+</script>
+
+</html>

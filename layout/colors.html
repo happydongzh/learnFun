@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Radio</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #111111;
+
+            /* overflow: hidden; */
+        }
+
+        h1 {
+            margin: 1rem;
+            width: 100%;
+            text-align: center;
+            color: whitesmoke;
+        }
+        .main {
+            position: relative;
+            margin: 0 auto;
+            width: 99vw;
+            height: 99vh;
+            perspective: 5px;
+            transform-style: preserve-3d;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: #444444;
+        }
+
+        .station {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #fff;
+            width: 100px;
+            height: 100px;
+            filter: blur(15px);
+            opacity: 0;
+            margin-top: 10%;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes showup {
+            to {
+                filter: blur(1px);
+                margin-top: 0;
+                opacity: 1;
+                box-shadow: 0 0 0px #000;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <h1> scroll down to load more</h1>
+    </div>
+    <script>
+        // const wh = {
+        //     w: document.body.offsetWidth,
+        //     h: document.body.offsetHeight
+        // },
+        var isRunning = null, lowest = 0, units = 15;
+        const wh = {
+            w: document.querySelector('.main').offsetWidth,
+            h: document.querySelector('.main').offsetHeight
+        }
+        colors = [
+            'rgba(255, 0, 0, 1)',
+            'rgba(255, 165, 0,1)',
+            'rgba(255, 255, 0, 1)',
+            'rgba(0, 255, 0, 1)',
+            'rgba(0, 127, 255, 1)',
+            'rgba(0, 0, 255, 1)',
+            'rgba(139, 0, 255, 1)'
+        ];
+
+        function getRandomIntInclusive(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+        }
+        function addNewStations(p, topRange) {
+            let pos = [];
+            /**
+            let stations = document.querySelectorAll('.station');
+            if (stations.length >= units * 2) {
+                let elemts = [...stations].filter((e) => {
+                    let t = parseInt(e.style.top.replace(/px/ig, ''));
+                    return (t <= p.scrollTop - p.offsetHeight);
+                }).sort(function (f, s) {
+                    let a = parseInt(f.style.top.replace(/px/ig, '')),
+                        b = parseInt(s.style.top.replace(/px/ig, ''));
+                    if (a < b) {
+                        return -1;
+                    }
+                    if (a > b) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                elemts.forEach(e => {
+                    let t = parseInt(e.style.top.replace(/px/ig, ''));
+                    console.log(t);
+                });
+                let reposition = [];
+                if (elemts.length > units) {
+                    for (let j = 0; j < units; j++) {
+                        reposition.push(elemts[j]);
+                        p.removeChild(elemts[j])
+                    }
+                } else {
+                    reposition = elemts;
+                }
+                console.log(reposition.length);
+                setTimeout(() => {
+                    reposition.forEach((e) => {
+                        p.append(e);
+                        let t = Math.floor(getRandomIntInclusive(topRange.min, topRange.max)),
+                            l = Math.floor(getRandomIntInclusive(100, wh.w - 100));
+                        pos.push(t);
+                        e.style.animation = '';
+                        e.style.top = t + 'px';
+                        e.style.left = l + 'px';
+                        e.style.animation = 'showup 1500ms cubic-bezier(0.57, 0.84, 0.68, 1) ' + getRandomIntInclusive(0, 1500) + 'ms 1 forwards';
+                    });
+                    lowest = Math.max(...pos);
+                }, 100);
+                return;
+            }
+            **/
+            for (let i = 0; i < units; i++) {
+                let div = document.createElement('DIV');
+                let t = Math.floor(getRandomIntInclusive(topRange.min, topRange.max)),
+                    l = Math.floor(getRandomIntInclusive(0, wh.w));
+                div.style.top = t + 'px';
+                div.style.left = l + 'px';
+                div.style.transform = 'translateZ(-' + (t + l) % 7 + 'px)';
+                div.style.backgroundColor = colors[i % 7];
+                div.classList.add('station');
+                div.style.animation = 'showup 1500ms cubic-bezier(0.57, 0.84, 0.68, 1) ' + getRandomIntInclusive(0, 1500) + 'ms 1 forwards'
+                pos.push(t);
+                p.append(div);
+            }
+            lowest = Math.max(...pos);
+        }
+        document.addEventListener('DOMContentLoaded', function (e) {
+            let main = document.querySelector('.main');
+            addNewStations(main, {
+                min: 0,
+                max: wh.h * 2
+            })
+            main.addEventListener('scroll', function (e) {
+                //console.log(this.scrollHeight + '-' + this.scrollTop + '==' + this.clientHeight + ' | ' + (this.scrollHeight - this.scrollTop === this.clientHeight));
+                //if (e.target.scrollTop >= ((e.target.scrollHeight - e.target.offsetHeight) * 0.85) && isRunning == null) {
+                if ((this.scrollHeight - this.scrollTop === this.clientHeight) && isRunning === null) {
+                    isRunning = setTimeout(() => {
+                        addNewStations(this, {
+                            min: lowest - e.target.clientHeight / 1,
+                            max: lowest + wh.h * 1
+                        });
+                        isRunning = null;
+                    }, 1000);
+                }
+
+                // if (e.target.scrollTop <= ((e.target.scrollHeight - e.target.offsetHeight) * 0.85) && isRunning == null) {
+                //     console.log(e.target.scrollTop + ' / ' + (e.target.scrollHeight - e.target.offsetHeight) * 0.85);
+                //     console.log('scroll to top');
+                // }
+
+            }, false);
+        });
+    </script>
+</body>
+
+</html>

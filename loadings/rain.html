@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+        }
+
+        body {
+            background-color: #222222;
+        }
+
+        .container {
+            background-color: transparent;
+            height: 100vh;
+            width: 100vw;
+            perspective: 300px;
+            transform-style: preserve-3d;
+        }
+
+        .drop {
+            width: 0px;
+            height: 20px;
+            position: absolute;
+            border: 1px solid #ffffff;
+            box-sizing: border-box;
+            border-radius: 50%;
+            opacity: 1;
+        }
+
+        @keyframes fall {
+            to {
+                top: 100vh;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+    </div>
+</body>
+
+<script>
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        let drops = [],
+            wh = { w: document.body.offsetWidth, h: document.body.offsetHeight }
+        container = document.querySelector('div.container');
+        for (let index = 0; index < 300; index++) {
+            let drop = document.createElement('div');
+            drop.style.animationDelay = getRandomIntInclusive(0, 1000) + 'ms';
+            drop.style.animationDuration = getRandomIntInclusive(500, 1500) + 'ms';
+            drop.style.animationName = 'fall';
+            drop.style.animationTimingFunction = 'linear';
+            drop.style.animationIterationCount = '2';
+            drop.style.borderColor = 'rgba(245, 245, 245, ' + Math.random() + ')';
+            drop.style.transform = 'translateZ(-' + getRandomIntInclusive(0, 150) + 'px)';
+            drop.style.left = getRandomIntInclusive(-50, wh.w) + 'px';
+            drop.style.top = getRandomIntInclusive(-50, 0) + 'px';
+
+            drop.addEventListener('animationiteration', function (e) {
+                this.style.left = getRandomIntInclusive(-50, wh.w) + 'px';
+                this.style.top = getRandomIntInclusive(-50, 0) + 'px';
+                if (this.style.animationIterationCount !== 'infinite') {
+                    this.style.animationIterationCount = 'infinite'
+                }
+            });
+
+            drop.classList.add('drop');
+            container.append(drop);
+        }
+    });
+</script>
+
+</html>
